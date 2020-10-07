@@ -11,12 +11,16 @@ export const mockReq = (options = {}) => {
     body: {},
     flash: sinon.stub().returns(ret),
     get: sinon.stub().returns(ret),
-    header: sinon.stub().returns(ret),
+    header: function (header) {
+      return options.headers[header]
+    },
     is: sinon.stub().returns(ret),
     params: {},
     query: {},
     session: {},
-  }, options)
+  },
+    options
+  )
 }
 
 // Returns a new mock response for use in testing.
@@ -48,5 +52,7 @@ export const mockRes = (options = {}) => {
     vary: sinon.stub().returns(ret),
     write: sinon.stub().returns(ret),
     writeHead: sinon.stub().returns(ret),
-  }, options)
+  },
+    options,
+    { locals: new Object(options.locals || {}) })
 }
